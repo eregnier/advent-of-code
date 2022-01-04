@@ -1,13 +1,8 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
-fn main() {
-    step1();
-    step2();
-}
-
-fn step1() {
-    let reader = BufReader::new(File::open("input").expect("cannot open 'input' file"));
+pub fn day1_step1() {
+    let reader = BufReader::new(File::open("inputs/d1").expect("cannot open 'input' file"));
     let mut previous: i32 = 0;
     let mut count = 0;
     for line in reader.lines() {
@@ -19,11 +14,11 @@ fn step1() {
         }
         previous = current;
     }
-    println!("step 1 > {}", count)
+    println!("d1s1 | {}", count)
 }
 
-fn step2() {
-    let reader = BufReader::new(File::open("input").expect("cannot open 'input' file"));
+pub fn day1_step2() {
+    let reader = BufReader::new(File::open("inputs/d1").expect("cannot open 'input' file"));
     let mut values: Vec<i32> = Vec::new();
     for line in reader.lines() {
         values.push(line.unwrap().parse().unwrap());
@@ -44,5 +39,5 @@ fn step2() {
         }
         previous = *w
     }
-    println!("step 2 > {}", count)
+    println!("d1s2 | {}", count)
 }

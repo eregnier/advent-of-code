@@ -1,13 +1,8 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
 
-fn main() {
-    step1();
-    step2();
-}
-
-fn step1() {
-    let reader = BufReader::new(File::open("input").expect("cannot open 'input' file"));
+pub fn day2_step1() {
+    let reader = BufReader::new(File::open("inputs/d2").expect("cannot open 'input' file"));
     let mut x = 0;
     let mut d = 0;
     for line in reader.lines() {
@@ -21,11 +16,11 @@ fn step1() {
             _ => println!("command not found"),
         }
     }
-    println!("step 1 | x{} X d{} => {}", x, d, x*d);
+    println!("d2s1 | x{} X d{} => {}", x, d, x * d);
 }
 
-fn step2() {
-    let reader = BufReader::new(File::open("input").expect("cannot open 'input' file"));
+pub fn day2_step2() {
+    let reader = BufReader::new(File::open("inputs/d2").expect("cannot open 'input' file"));
     let mut d = 0;
     let mut a = 0;
     let mut x = 0;
@@ -39,9 +34,9 @@ fn step2() {
             "forward" => {
                 x += distance;
                 d += a * distance;
-            },
+            }
             _ => println!("command not found"),
         }
     }
-    println!("step 1 | x{} X d{} => {}", x, d, x*d);
+    println!("d2s2 | x{} X d{} => {}", x, d, x * d);
 }
