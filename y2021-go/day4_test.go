@@ -66,18 +66,19 @@ func checkWin(board [][]Cell) (int, bool) {
 	var foundByColumn = []int{0, 0, 0, 0, 0}
 	foundLine := false
 	foundColumn := false
-	for x, lineBoard := range board {
+	for _, lineBoard := range board {
 		found := 0
-		for _, cell := range lineBoard {
+		for y, cell := range lineBoard {
 			if cell.found {
 				found++
-				foundByColumn[x]++
+				foundByColumn[y]++
 			}
 		}
 		if found == 5 {
 			foundLine = true
 		}
 	}
+
 	for _, column := range foundByColumn {
 		if column == 5 {
 			foundColumn = true
@@ -112,5 +113,22 @@ func TestDay4Step1(t *testing.T) {
 }
 
 func TestDay4Step2(t *testing.T) {
-	fmt.Println("d4s2 | TODO")
+	runs, boards := parseFile()
+	lastWinValue := 0
+	lastPickValue := 0
+	pickedBoards := make(map[int]bool)
+	for _, pick := range runs {
+		for x, board := range boards {
+			if !pickedBoards[x] {
+				markNumber(pick, board)
+				value, found := checkWin(board)
+				if found {
+					pickedBoards[x] = true
+					lastWinValue = value
+					lastPickValue = pick
+				}
+			}
+		}
+	}
+	fmt.Println("d4s2 |", lastWinValue, lastPickValue, lastWinValue*lastPickValue)
 }
