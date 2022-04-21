@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"os"
+	"math"
 	"strconv"
 	"strings"
 	"testing"
 )
 
-var DEBUG = os.Getenv("DEBUG") == "1"
+var DEBUG = false
 
 func initData() ([][]int, [][]int) {
 	var vents [][]int
@@ -98,6 +98,7 @@ func computeVector(entry []int, vectors [][]int) [][]int {
 	}
 	return vectors
 }
+
 func TestDay5Step1(t *testing.T) {
 	vents, vectors := initData()
 	for s, entry := range vents {
@@ -117,10 +118,77 @@ func TestDay5Step1(t *testing.T) {
 			}
 		}
 	}
-	fmt.Println("d4s1 |", totalOverlap)
+	fmt.Println("d5s1 |", totalOverlap)
 
 }
 
+func computeVectorWithDiagonals(entry []int, vectors [][]int) [][]int {
+	x1, y1, x2, y2 := entry[0], entry[1], entry[2], entry[3]
+	//compute Y
+	if x1 == x2 {
+		if DEBUG {
+			print("\\Y/ ", y1 < y2, " y1 ", y1, " y2 ", y2, " x ", x1, "\n")
+		}
+		from, to := fromTo(y1, y2)
+		for y := from; y <= to; y++ {
+			vectors[y][x1]++
+		}
+	}
+	//compute X
+	if y1 == y2 {
+		if DEBUG {
+			print("\\X/ ", x1 < x2, " x1 ", x1, " x2 ", x2, " y ", y1, "\n")
+		}
+		from, to := fromTo(x1, x2)
+		for x := from; x <= to; x++ {
+			vectors[y1][x]++
+		}
+	}
+
+	diffX := math.Abs(math.Abs(float64(x1)) - math.Abs(float64(x2)))
+	diffY := math.Abs(math.Abs(float64(y1)) - math.Abs(float64(y2)))
+
+	if diffX == diffY {
+
+		deltaX := x1
+		deltaY := y1
+
+		for d := 0; d < int(diffX)+1; d++ {
+			vectors[deltaY][deltaX]++
+			if x1 > x2 {
+				deltaX--
+			} else {
+				deltaX++
+			}
+			if y1 > y2 {
+				deltaY--
+			} else {
+				deltaY++
+			}
+		}
+	}
+
+	return vectors
+}
+
 func TestDay5Step2(t *testing.T) {
-	fmt.Println("d4s2 |")
+	vents, vectors := initData()
+	for s, entry := range vents {
+		if DEBUG {
+			fmt.Printf("\n--- step %d ---\n", s)
+		}
+		vectors = computeVectorWithDiagonals(entry, vectors)
+		if DEBUG {
+			printVectors(vectors)
+		}
+	}
+	totalOverlap := 0
+	for _, vector := range vectors {
+		for _, point := range vector {
+			if point > 1 {
+				totalOverlap++
+			}
+		}
+	}
+	fmt.Println("d5s2 |", totalOverlap)
 }
