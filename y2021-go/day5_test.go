@@ -8,8 +8,6 @@ import (
 	"testing"
 )
 
-var DEBUG = false
-
 func initData() ([][]int, [][]int) {
 	var vents [][]int
 	maxX := 0
