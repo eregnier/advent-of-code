@@ -44,9 +44,9 @@ func TestDay3Step1(t *testing.T) {
 
 	g := res2int(gamma)
 	e := res2int(epsilon)
-	fmt.Printf("d3s1 | %d X %d => %d\n", g, e, g*e)
+	fmt.Println("d3s1 |", g*e)
 }
 
 func TestDay3Step2(t *testing.T) {
-	fmt.Println("TODO")
+	fmt.Println("d3s2 | TODO")
 }

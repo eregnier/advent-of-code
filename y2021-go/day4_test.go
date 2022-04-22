@@ -130,5 +130,5 @@ func TestDay4Step2(t *testing.T) {
 			}
 		}
 	}
-	fmt.Println("d4s2 |", lastWinValue, lastPickValue, lastWinValue*lastPickValue)
+	fmt.Println("d4s2 |", lastWinValue*lastPickValue)
 }
