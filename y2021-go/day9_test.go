@@ -79,7 +79,7 @@ func TestDay9Step1(t *testing.T) {
 	for _, lowPoint := range lowPoints {
 		riskLevel += 1 + lowPoint
 	}
-	fmt.Println("d9s1 |", riskLevel)
+	fmt.Println("d09s1 |", riskLevel)
 }
 
 func lowLevelCoords(cave [][]int, h int, w int) []Point {
@@ -155,6 +155,6 @@ func TestDay9Step2(t *testing.T) {
 		basinsSize = append(basinsSize, len(findBasin(lowPoint, &affectedPoints, cave, w, h)))
 	}
 	sort.Sort(sort.Reverse(sort.IntSlice(basinsSize)))
-	fmt.Println("d9s2 |", basinsSize[0] * basinsSize[1] * basinsSize[2] )
+	fmt.Println("d09s2 |", basinsSize[0]*basinsSize[1]*basinsSize[2])
 
 }

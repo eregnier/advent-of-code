@@ -116,7 +116,7 @@ func TestDay5Step1(t *testing.T) {
 			}
 		}
 	}
-	fmt.Println("d5s1 |", totalOverlap)
+	fmt.Println("d05s1 |", totalOverlap)
 
 }
 
@@ -188,5 +188,5 @@ func TestDay5Step2(t *testing.T) {
 			}
 		}
 	}
-	fmt.Println("d5s2 |", totalOverlap)
+	fmt.Println("d05s2 |", totalOverlap)
 }

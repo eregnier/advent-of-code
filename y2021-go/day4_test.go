@@ -104,7 +104,7 @@ func TestDay4Step1(t *testing.T) {
 			markNumber(pick, board)
 			value, found := checkWin(board)
 			if found {
-				fmt.Println("d4s1 |", value * pick)
+				fmt.Println("d04s1 |", value*pick)
 				return
 			}
 		}
@@ -130,5 +130,5 @@ func TestDay4Step2(t *testing.T) {
 			}
 		}
 	}
-	fmt.Println("d4s2 |", lastWinValue*lastPickValue)
+	fmt.Println("d04s2 |", lastWinValue*lastPickValue)
 }

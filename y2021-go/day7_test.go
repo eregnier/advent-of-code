@@ -53,7 +53,7 @@ func TestDay7Step1(t *testing.T) {
 		}
 
 	}
-	fmt.Println("d7s1 |", minFuel)
+	fmt.Println("d07s1 |", minFuel)
 
 }
 
@@ -113,6 +113,6 @@ func TestDay7Step2(t *testing.T) {
 		}
 
 	}
-	fmt.Println("d7s2 |", minFuel)
+	fmt.Println("d07s2 |", minFuel)
 
 }

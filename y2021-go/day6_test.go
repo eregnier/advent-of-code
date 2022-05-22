@@ -41,7 +41,7 @@ func TestDay6Step1(t *testing.T) {
 			fmt.Println("After", d, "days: ", fishes)
 		}
 	}
-	fmt.Println("d6s1 |", len(fishes))
+	fmt.Println("d06s1 |", len(fishes))
 
 }
 
@@ -77,7 +77,7 @@ func TestDay6Step2(t *testing.T) {
 	for _, fish := range fishes {
 		sum += fish
 	}
-	fmt.Println("d6s2 |", sum)
+	fmt.Println("d06s2 |", sum)
 
 }
 

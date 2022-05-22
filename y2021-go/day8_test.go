@@ -16,7 +16,7 @@ func TestDay8Step1(t *testing.T) {
 			}
 		}
 	}
-	fmt.Println("d8s1 |", fieldCount)
+	fmt.Println("d08s1 |", fieldCount)
 
 }
 func TestDay8Step2(t *testing.T) {
