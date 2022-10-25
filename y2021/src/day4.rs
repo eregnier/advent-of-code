@@ -1,118 +1,123 @@
 use std::fs::File;
 use std::io::{BufRead, BufReader};
-use std::str::Split;
 
+#[derive(Copy, Clone)]
 struct Cell {
     value: i32,
     found: bool,
 }
 
-pub fn day4_step1() {
+fn parse_file() -> (Vec<i32>, Vec<Vec<Vec<Cell>>>) {
     let reader = BufReader::new(File::open("inputs/d4").expect("cannot open 'input' file"));
-    let mut runs: Split<&str>;
-    let mut games = vec![];
-    let mut rounds = vec![];
+    let mut boards: Vec<Vec<Vec<Cell>>> = Vec::new();
+    let mut board: Vec<Vec<Cell>> = Vec::new();
+    let mut runs: Vec<i32> = Vec::new();
+    let mut cell: Cell;
+
     for (x, line) in reader.lines().enumerate() {
-        let l = line.unwrap();
+        let l: String = line.unwrap();
         if x == 0 {
-            runs = l.split(",");
-            for run in runs {
+            for run in l.split(",") {
                 if run != "" {
-                    rounds.push(run.parse::<i32>().unwrap());
+                    runs.push(run.parse::<i32>().unwrap());
                 }
             }
         } else {
-            let mut game = vec![];
             if l == "" {
-                games.push(game);
+                if board.len() > 0 {
+                    boards.push(board.to_vec());
+                    board = Vec::new();
+                }
             } else {
-                let mut line_game = vec![];
-                for number in l.split(" ") {
+                let mut line_board = Vec::new();
+                for number in l.split_whitespace() {
                     if number != "" {
-                        let cell = Cell {
+                        cell = Cell {
                             value: number.parse::<i32>().unwrap(),
                             found: false,
                         };
-                        line_game.push(cell);
+                        line_board.push(cell);
                     }
                 }
-                println!("push here {}", line_game.len());
-                game.push(line_game);
-                println!("push :: {}", game[game.len() - 1].len());
-            }
-            println!("push > {}", game[game.len() - 1].len());
-        }
-    }
-
-    for game in games {
-        // println!("game ! {}", game.len());
-        for line in game {
-            println!("super ! {}", line.len());
-            if line.len() != 5 {
-                println!("game line error");
-            }
-            for c in line {
-                println!("{} > {}", c.found, c.value);
+                board.push(line_board.to_vec());
             }
         }
     }
-    // for (x, round) in rounds.iter().enumerate() {
-    //     let continue_game = true;
-    //     update_games(*round, &mut games);
-    //     let (game_id, found) = check_games(&mut games);
-    //     println!("winner game id : {}, found {}", game_id, found);
-    //     // for game in games {
-    //     //     update_game(*round, game);
-    //     // }
-    //     // let continue_game = run_round(*round, &mut *games);
-    //     if !continue_game {
-    //         println!("game complete at round {}", x);
-    //         break;
-    //     }
-    // }
-
-    println!("d4s1 | not found")
+    return (runs, boards);
 }
 
-// fn update_games(round: i32, games: &mut Vec<Vec<Vec<Cell>>>) {
-//     println!("games len {}", games.len());
-//     for game in games {
-//         for line in game {
-//             for x in 0..line.len() {
-//                 if line[x].value == round {
-//                     line[x].found = true;
-//                 }
-//             }
-//         }
-//     }
-// }
-// fn check_games(games: &mut Vec<Vec<Vec<Cell>>>) -> (usize, bool) {
-//     let width = 5;
-//     let height = 5;
+fn check_win(board: &mut Vec<Vec<Cell>>) -> (i32, bool) {
+    let mut total: i32 = 0;
+    let mut found_by_column: Vec<i32> = vec![0, 0, 0, 0, 0];
+    let mut found_line: bool = false;
+    let mut found_column: bool = false;
+    for (_, line_board) in board.iter().enumerate() {
+        let mut found = 0;
+        for (y, cell) in line_board.iter().enumerate() {
+            if cell.found {
+                found += 1;
+                found_by_column[y] += 1;
+            }
+        }
+        if found == 5 {
+            found_line = true;
+        }
+    }
+    for column in found_by_column {
+        if column == 5 {
+            found_column = true;
+        }
+    }
+    if found_line || found_column {
+        for (_, line) in board.iter().enumerate() {
+            for (_, cell) in line.iter().enumerate() {
+                if !cell.found {
+                    total += cell.value;
+                }
+            }
+        }
+        return (total, true);
+    }
+    return (total, false);
+}
 
-//     for (id, game) in games.iter().enumerate() {
-//         println!("Testing game {} | {}", id, game.len());
-//         let mut col_ok = vec![true, true, true, true, true];
-//         for x in 0..height {
-//             let mut row_ok = true;
-//             for y in 0..width {
-//                 if !game[x][y].found {
-//                     col_ok[y] = false;
-//                     row_ok = false;
-//                 }
-//             }
-//             if row_ok {
-//                 return (id, true);
-//             }
-//         }
-//         for c in col_ok {
-//             if c {
-//                 return (id, true);
-//             }
-//         }
-//     }
-//     return (0, false);
-// }
+fn print_board(board: Vec<Vec<Cell>>) {
+    for line_board in board.iter() {
+        for cell in line_board.iter() {
+            print!("{}", if cell.found { "✅" } else { "❌" });
+        }
+        println!();
+    }
+}
+
+fn mark_number(number: i32, board: &mut Vec<Vec<Cell>>)  {
+    for line_board in board.iter_mut() {
+        for cell in line_board.iter_mut() {
+            if cell.value == number {
+                (*cell).found = true;
+            }
+        }
+    }
+    print_board(board.to_vec());
+}
+
+pub fn day4_step1() {
+    let  (runs, mut boards) = parse_file();
+    let mut mut_boards = boards.iter_mut();
+    for run in runs {
+        // println!("{}", run);
+        for mut board in mut_boards {
+            mark_number(run, &mut board);
+            let (value, found) = check_win(board);
+            // println!("{}>{}", value, found);
+            if found {
+                println!("d04s1 |{}", value * run);
+                return;
+            }
+        }
+    }
+}
+
 pub fn day4_step2() {
     println!("d4s2 | not found")
 }
