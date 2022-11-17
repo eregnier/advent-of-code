@@ -14,13 +14,13 @@ type Fold struct {
 }
 
 func TestDay13Step1(t *testing.T) {
-	points, maxX, maxY, folds := readData()
+	points, maxX, maxY, folds := readFolds()
 	points = mergeHorizontal(folds[0].value, maxX, maxY, points)
-	fmt.Println("d11s1 |", len(points))
+	fmt.Println("d13s1 |", len(points))
 }
 
 func TestDay13Step2(t *testing.T) {
-	points, maxX, maxY, folds := readData()
+	points, maxX, maxY, folds := readFolds()
 	for _, fold := range folds {
 		if fold.dimension == "x" {
 			points = mergeHorizontal(fold.value, maxX, maxY, points)
@@ -31,7 +31,7 @@ func TestDay13Step2(t *testing.T) {
 			maxY = fold.value
 		}
 	}
-	fmt.Println("d11s1 |")
+	fmt.Println("d13s1 |")
 	display(points, maxX, maxY)
 }
 
@@ -93,7 +93,7 @@ func display(points map[string]bool, maxX int, maxY int) {
 	}
 }
 
-func readData() (map[string]bool, int, int, []Fold) {
+func readFolds() (map[string]bool, int, int, []Fold) {
 	var folds = make([]Fold, 0)
 	var points = make(map[string]bool)
 	maxX := 0
